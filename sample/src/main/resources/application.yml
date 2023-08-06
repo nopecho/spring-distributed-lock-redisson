@@ -6,3 +6,8 @@ spring:
   datasource:
     url: jdbc:h2:mem:local
     driver-class-name: org.h2.Driver
+
+distributed-lock:
+  redisson:
+    host: redis://localhost
+    port: 6379

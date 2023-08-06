@@ -1,4 +1,0 @@
-distributed-lock:
-  redisson:
-    host: redis://localhost
-    port: 6379

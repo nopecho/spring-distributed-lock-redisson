@@ -1,5 +1,0 @@
-dependencies {
-    implementation 'org.redisson:redisson-spring-boot-starter:3.19.0'
-
-    testImplementation 'com.github.kstyrc:embedded-redis:0.6'
-}
