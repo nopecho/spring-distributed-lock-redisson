@@ -1,4 +1,4 @@
-package io.nopecho.distributed.parser;
+package io.nopecho.distributed.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.expression.spel.standard.SpelExpressionParser;

@@ -1,6 +1,6 @@
 package io.nopecho.distributed;
 
-import io.nopecho.distributed.parser.KeyParseService;
+import io.nopecho.distributed.service.KeyParseService;
 import io.nopecho.distributed.service.DistributedLockService;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -17,10 +17,10 @@ import java.util.concurrent.locks.Lock;
 @RequiredArgsConstructor
 public class DistributedLockAspect {
 
-    private static final String LOCK_PREFIX = "LOCK:";
+    private static final String LOCK_KEY_PREFIX = "LOCK:";
 
     private final DistributedLockService lockService;
-    private final KeyParseService parseService;
+    private final KeyParseService keyParseService;
 
     @Around("@annotation(io.nopecho.distributed.DistributedLock)")
     public Object distributedLock(final ProceedingJoinPoint joinPoint) throws Throwable {
@@ -45,7 +45,7 @@ public class DistributedLockAspect {
     }
 
     private String getLockKey(MethodSignature signature, ProceedingJoinPoint joinPoint, DistributedLock annotation) {
-        return LOCK_PREFIX + parseService.parseDynamicKey(signature.getParameterNames(), joinPoint.getArgs(), annotation.key());
+        return LOCK_KEY_PREFIX + keyParseService.parseDynamicKey(signature.getParameterNames(), joinPoint.getArgs(), annotation.key());
     }
 
     private DistributedLock getDistributedLockAnnotation(MethodSignature signature) {
