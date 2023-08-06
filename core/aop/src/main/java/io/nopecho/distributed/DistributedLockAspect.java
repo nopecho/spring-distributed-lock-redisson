@@ -31,8 +31,8 @@ public class DistributedLockAspect {
         Lock lock = lockService.getLock(key);
 
         try {
-            boolean isLock = lockService.tryLock(lock, annotation.waitTime(), annotation.leaseTime(), annotation.timeUnit());
-            if(!isLock) {
+            boolean isLocked = lockService.tryLock(lock, annotation.waitTime(), annotation.leaseTime(), annotation.timeUnit());
+            if(!isLocked) {
                 return false;
             }
 
