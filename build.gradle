@@ -1,0 +1,30 @@
+plugins {
+    id 'java-library'
+    id "io.freefair.lombok" version "6.6.1" apply false
+}
+
+group 'io.nopecho'
+version '1.0.0'
+
+configure(subprojects) {
+
+    apply plugin: "java-library"
+    apply plugin: "io.freefair.lombok"
+
+    sourceCompatibility = 17
+    targetCompatibility = 17
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        testImplementation 'org.assertj:assertj-core:3.24.2'
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+}

@@ -1,0 +1,3 @@
+rootProject.name = 'spring-distributed-lock-redisson'
+
+include ('core', 'core:aop', 'core:adapter')
