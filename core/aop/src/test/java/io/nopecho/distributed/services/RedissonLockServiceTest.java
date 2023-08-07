@@ -1,6 +1,6 @@
 package io.nopecho.distributed.services;
 
-import io.nopecho.distributed.SetupRedisTest;
+import io.nopecho.distributed.SetupTestRedis;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import java.util.concurrent.locks.Lock;
 
 import static org.assertj.core.api.Assertions.*;
 
-class RedissonLockServiceTest extends SetupRedisTest {
+class RedissonLockServiceTest extends SetupTestRedis {
 
     Config config = new Config();
     RedissonClient redissonClient;
@@ -23,7 +23,7 @@ class RedissonLockServiceTest extends SetupRedisTest {
 
     @BeforeEach
     void setUp() {
-        config.useSingleServer().setAddress("redis://localhost:6379");
+        config.useSingleServer().setAddress("redis://localhost:6666");
         redissonClient = Redisson.create(config);
         sut = new RedissonLockService(redissonClient);
     }

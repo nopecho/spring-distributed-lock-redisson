@@ -19,7 +19,6 @@ public class RedissonLockService implements DistributedLockService {
     @Override
     public boolean tryLock(Lock lock, Long waitTime, Long leaseTime, TimeUnit timeUnit) throws InterruptedException {
         RLock redissonLock = (RLock) lock;
-        log.info("락 획득 시도: {}", redissonLock.getName());
         return redissonLock.tryLock(waitTime, leaseTime, timeUnit);
     }
 
