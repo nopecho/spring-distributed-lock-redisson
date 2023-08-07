@@ -34,7 +34,7 @@ public class RedissonLockService implements DistributedLockService {
         try {
             redissonLock.unlock();
         } catch (IllegalMonitorStateException e) {
-            log.info("Redisson Distributed Lock is Already UnLocking. key = {}", redissonLock.getName());
+            log.info("Redisson Lock is Already UnLocking. key = {}", redissonLock.getName());
         }
     }
 }

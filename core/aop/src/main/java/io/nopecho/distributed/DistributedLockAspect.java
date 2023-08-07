@@ -10,7 +10,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -38,7 +37,7 @@ public class DistributedLockAspect {
         try {
             boolean isLocked = lockService.tryLock(lock, annotation.waitTime(), annotation.leaseTime(), annotation.timeUnit());
             if(!isLocked) {
-                throw new LockAcquisitionFailureException("Redisson Distributed Lock Acquire Failure. Already Using Lock. key = " + key);
+                throw new LockAcquisitionFailureException("Redisson Lock Acquire Failure. Already Using Lock. key = " + key);
             }
             return aopTransaction.proceed(joinPoint);
         } finally {
