@@ -1,4 +1,4 @@
-package io.nopecho.distributed.service;
+package io.nopecho.distributed.services;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;

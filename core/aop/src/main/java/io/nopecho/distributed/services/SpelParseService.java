@@ -1,7 +1,7 @@
-package io.nopecho.distributed.service;
+package io.nopecho.distributed.services;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class SpelParseService implements KeyParseService {
 
-    private final SpelExpressionParser parser;
+    private final ExpressionParser parser;
 
     @Override
     public String parseDynamicKey(String[] paramNames, Object[] args, String key) {

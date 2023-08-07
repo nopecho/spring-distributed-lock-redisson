@@ -12,14 +12,11 @@ import java.util.concurrent.TimeUnit;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DistributedLock {
-    /**
-     * @return 락 획득 시 사용될 key 값
-     */
     String key();
 
     TimeUnit timeUnit() default TimeUnit.SECONDS;
 
     long waitTime() default 3L;
 
-    long leaseTime() default 3L;
+    long leaseTime() default 5L;
 }

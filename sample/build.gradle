@@ -4,7 +4,6 @@ plugins {
 }
 
 dependencies {
-    // distributed lock dependency
     implementation project(':core:aop')
 
     implementation 'org.springframework.boot:spring-boot-starter-web'

@@ -1,26 +1,31 @@
 package io.nopecho.distributed;
 
-import io.nopecho.distributed.service.KeyParseService;
-import io.nopecho.distributed.service.DistributedLockService;
+import io.nopecho.distributed.exceptions.LockAcquisitionFailureException;
+import io.nopecho.distributed.services.AopTransaction;
+import io.nopecho.distributed.services.KeyParseService;
+import io.nopecho.distributed.services.DistributedLockService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.locks.Lock;
 
+@Slf4j
 @Aspect
 @Component
 @RequiredArgsConstructor
 public class DistributedLockAspect {
 
-    private static final String LOCK_KEY_PREFIX = "LOCK:";
-
+    private static final String LOCK_KEY_PREFIX = "lock:";
     private final DistributedLockService lockService;
     private final KeyParseService keyParseService;
+    private final AopTransaction aopTransaction;
 
     @Around("@annotation(io.nopecho.distributed.DistributedLock)")
     public Object distributedLock(final ProceedingJoinPoint joinPoint) throws Throwable {
@@ -33,12 +38,9 @@ public class DistributedLockAspect {
         try {
             boolean isLocked = lockService.tryLock(lock, annotation.waitTime(), annotation.leaseTime(), annotation.timeUnit());
             if(!isLocked) {
-                return false;
+                throw new LockAcquisitionFailureException("Redisson Distributed Lock Acquire Failure. Already Using Lock. key = " + key);
             }
-
-            return joinPoint.proceed();
-        } catch (InterruptedException e) {
-            throw e;
+            return aopTransaction.proceed(joinPoint);
         } finally {
             lockService.unLock(lock);
         }

@@ -1,6 +1,6 @@
 package io.nopecho.distributed.parser;
 
-import io.nopecho.distributed.service.SpelParseService;
+import io.nopecho.distributed.services.SpelParseService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
