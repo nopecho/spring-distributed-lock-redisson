@@ -2,8 +2,8 @@ package io.nopecho.distributed;
 
 import io.nopecho.distributed.exceptions.LockAcquisitionFailureException;
 import io.nopecho.distributed.services.AopTransaction;
-import io.nopecho.distributed.services.KeyParseService;
 import io.nopecho.distributed.services.DistributedLockService;
+import io.nopecho.distributed.services.KeyParseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -26,17 +26,17 @@ public class DistributedLockAspect {
     private final KeyParseService keyParseService;
     private final AopTransaction aopTransaction;
 
-    @Around("@annotation(io.nopecho.distributed.DistributedLock)")
+    @Around("@annotation(DistributedLock)")
     public Object distributedLock(final ProceedingJoinPoint joinPoint) throws Throwable {
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        final MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         DistributedLock annotation = getDistributedLockAnnotation(signature);
 
-        String key = getLockKey(signature, joinPoint, annotation);
-        Lock lock = lockService.getLock(key);
+        final String key = getLockKey(signature, joinPoint, annotation);
+        final Lock lock = lockService.getLock(key);
 
         try {
             boolean isLocked = lockService.tryLock(lock, annotation.waitTime(), annotation.leaseTime(), annotation.timeUnit());
-            if(!isLocked) {
+            if (!isLocked) {
                 throw new LockAcquisitionFailureException("Redisson Lock Acquire Failure. Already Using Lock. key = " + key);
             }
             return aopTransaction.proceed(joinPoint);
@@ -45,12 +45,12 @@ public class DistributedLockAspect {
         }
     }
 
-    private String getLockKey(MethodSignature signature, ProceedingJoinPoint joinPoint, DistributedLock annotation) {
-        return LOCK_KEY_PREFIX + keyParseService.parseDynamicKey(signature.getParameterNames(), joinPoint.getArgs(), annotation.key());
-    }
-
     private DistributedLock getDistributedLockAnnotation(MethodSignature signature) {
         Method method = signature.getMethod();
         return method.getAnnotation(DistributedLock.class);
+    }
+
+    private String getLockKey(MethodSignature signature, ProceedingJoinPoint joinPoint, DistributedLock annotation) {
+        return LOCK_KEY_PREFIX + keyParseService.parseDynamicKey(signature.getParameterNames(), joinPoint.getArgs(), annotation.key());
     }
 }
