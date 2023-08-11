@@ -1,6 +1,8 @@
 package io.nopecho.distributed;
 
-import io.nopecho.distributed.services.*;
+import io.nopecho.distributed.services.AopTransaction;
+import io.nopecho.distributed.services.DistributedLockService;
+import io.nopecho.distributed.services.RedissonLockService;
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,19 +12,16 @@ import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
 import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 class DistributedLockAspectTest extends SetupTestRedis {
 
-    SpelExpressionParser parser = new SpelExpressionParser();
-    KeyParseService keyParseService = new SpelParseService(parser);
     AopTransaction aopTransaction = new AopTransaction();
     Config config = new Config();
     RedissonClient redissonClient;
@@ -37,7 +36,7 @@ class DistributedLockAspectTest extends SetupTestRedis {
         redissonClient = Redisson.create(config);
         lockService = new RedissonLockService(redissonClient);
 
-        sut = new DistributedLockAspect(lockService, keyParseService, aopTransaction);
+        sut = new DistributedLockAspect(lockService, aopTransaction);
     }
 
     @AfterEach
@@ -93,7 +92,6 @@ class DistributedLockAspectTest extends SetupTestRedis {
         proxyFactory = new AspectJProxyFactory(o);
         proxyFactory.addAspect(sut);
     }
-
 
 
     @AllArgsConstructor

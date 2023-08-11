@@ -3,9 +3,8 @@ package io.nopecho.distributed.services;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
-import org.springframework.stereotype.Component;
 
-@Component
+@Deprecated
 public class SpelParseService implements KeyParseService {
 
     private final ExpressionParser parser = new SpelExpressionParser();

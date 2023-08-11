@@ -3,14 +3,11 @@ package io.nopecho.distributed.parser;
 import io.nopecho.distributed.services.SpelParseService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class SpelParseServiceTest {
-
-    SpelExpressionParser parser = new SpelExpressionParser();
-    SpelParseService sut = new SpelParseService(parser);
+    SpelParseService sut = new SpelParseService();
 
     @DisplayName("SpEL 문법으로 Long 값이 String 파싱된다.")
     @Test
