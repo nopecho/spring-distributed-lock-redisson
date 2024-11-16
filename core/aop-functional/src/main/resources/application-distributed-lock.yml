@@ -1,0 +1,7 @@
+distributed:
+  lock:
+    redisson:
+      host: localhost
+      port: 6379
+      username: local
+      password: local
