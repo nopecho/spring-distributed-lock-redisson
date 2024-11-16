@@ -19,9 +19,10 @@ configure(subprojects) {
     }
 
     dependencies {
+
         testImplementation 'org.assertj:assertj-core:3.24.2'
-        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+        testImplementation platform("org.junit:junit-bom:${junitBomVersion}")
+        testImplementation "org.junit.jupiter:junit-jupiter"
     }
 
     tasks.named('test') {
